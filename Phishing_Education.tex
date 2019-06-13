@@ -1,11 +1,38 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{filecontents}
+
+\usepackage[style=numeric]{biblatex}
+\addbibresource{phishing_education.bib}
+
+%% custom config file for biblatex to create a new field 'mynote'
+\begin{filecontents}{biblatex-dm.cfg}
+\DeclareDatamodelFields[type=field,datatype=literal,skipout=false]{mynote}
+\end{filecontents}  
+
+%% Transfer the Note field to 'mynote' and null the note field 
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map{
+      \step[fieldsource=note]
+      \step[fieldset=mynote, origfieldval]
+      \step[fieldset=note, null]
+    }
+  }
+}
+
+%% For each bibitem, print the mynote contents
+\AtEveryBibitem{
+\clearfield{note}
+\csappto{blx@bbx@\thefield{entrytype}}{\iffieldundef{mynote}{}{\par \textbf{Note:} \printfield{mynote}}}
+}
+
 
 \begin{document}
 \title{Phishing Education Effectiveness Literature Review} \nocite{*}
 \maketitle
-\bibliographystyle{asmejour}
-\bibliography{phishing_education}
+
+\printbibliography
 
 \end{document}
