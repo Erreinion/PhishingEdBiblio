@@ -25,7 +25,7 @@
 %% For each bibitem, print the mynote contents
 \AtEveryBibitem{
 \clearfield{note}
-\csappto{blx@bbx@\thefield{entrytype}}{\iffieldundef{mynote}{}{\par \textbf{Note:} \printfield{mynote}}}
+\csappto{blx@bbx@\thefield{entrytype}}{\iffieldundef{mynote}{}{\par \textbf{Note:} \printfield{mynote}}\\}
 }
 
 
